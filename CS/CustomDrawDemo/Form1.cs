@@ -16,9 +16,9 @@ namespace CustomDrawDemo {
 
         #region InitialDataConstants
         public static Random RandomInstance = new Random();
-        public static string[] Users = new string[] {"Peter Dolan", "Ryan Fischer", "Richard Fisher", 
-                                                 "Tom Hamlett", "Mark Hamilton", "Steve Lee", "Jimmy Lewis", "Jeffrey W McClain", 
-                                                 "Andrew Miller", "Dave Murrel", "Bert Parkins", "Mike Roller", "Ray Shipman", 
+        public static string[] Users = new string[] {"Peter Dolan", "Ryan Fischer", "Richard Fisher",
+                                                 "Tom Hamlett", "Mark Hamilton", "Steve Lee", "Jimmy Lewis", "Jeffrey W McClain",
+                                                 "Andrew Miller", "Dave Murrel", "Bert Parkins", "Mike Roller", "Ray Shipman",
                                                  "Paul Bailey", "Brad Barnes", "Carl Lucas", "Jerry Campbell"};
         #endregion
 
@@ -26,7 +26,7 @@ namespace CustomDrawDemo {
 
         public Form1() {
             InitializeComponent();
-            FillResources(schedulerStorage1, 5);
+            FillResources(schedulerDataStorage1, 5);
             InitAppointments();
 
             schedulerControl1.Start = DateTime.Now;
@@ -41,46 +41,40 @@ namespace CustomDrawDemo {
             schedulerControl1.TimelineView.Scales.Add(new TimeScaleHour());
             schedulerControl1.TimelineView.Scales[1].Width = 100;
 
-            
+
             UpdateControls();
 
         }
 
         #region InitialDataLoad
-        void FillResources(SchedulerStorage storage, int count) {
-            storage.BeginUpdate();
-            try {
-                int cnt = Math.Min(count, Users.Length);
-                for (int i = 1; i <= cnt; i++)
-                    storage.Resources.Items.Add(storage.CreateResource(Guid.NewGuid() , Users[i - 1]));
-            }
-            finally {
-                storage.EndUpdate();
-            }
+        void FillResources(SchedulerDataStorage storage, int count) {
+            int cnt = Math.Min(count, Users.Length);
+            for (int i = 1; i <= cnt; i++)
+                storage.Resources.Items.Add(storage.CreateResource(Guid.NewGuid(), Users[i - 1]));
         }
         void InitAppointments() {
-            this.schedulerStorage1.Appointments.Mappings.Start = "StartTime";
-            this.schedulerStorage1.Appointments.Mappings.End = "EndTime";
-            this.schedulerStorage1.Appointments.Mappings.Subject = "Subject";
-            this.schedulerStorage1.Appointments.Mappings.AllDay = "AllDay";
-            this.schedulerStorage1.Appointments.Mappings.Description = "Description";
-            this.schedulerStorage1.Appointments.Mappings.Label = "Label";
-            this.schedulerStorage1.Appointments.Mappings.Location = "Location";
-            this.schedulerStorage1.Appointments.Mappings.RecurrenceInfo = "RecurrenceInfo";
-            this.schedulerStorage1.Appointments.Mappings.ReminderInfo = "ReminderInfo";
-            this.schedulerStorage1.Appointments.Mappings.ResourceId = "OwnerId";
-            this.schedulerStorage1.Appointments.Mappings.Status = "Status";
-            this.schedulerStorage1.Appointments.Mappings.Type = "EventType";
+            this.schedulerDataStorage1.Appointments.Mappings.Start = "StartTime";
+            this.schedulerDataStorage1.Appointments.Mappings.End = "EndTime";
+            this.schedulerDataStorage1.Appointments.Mappings.Subject = "Subject";
+            this.schedulerDataStorage1.Appointments.Mappings.AllDay = "AllDay";
+            this.schedulerDataStorage1.Appointments.Mappings.Description = "Description";
+            this.schedulerDataStorage1.Appointments.Mappings.Label = "Label";
+            this.schedulerDataStorage1.Appointments.Mappings.Location = "Location";
+            this.schedulerDataStorage1.Appointments.Mappings.RecurrenceInfo = "RecurrenceInfo";
+            this.schedulerDataStorage1.Appointments.Mappings.ReminderInfo = "ReminderInfo";
+            this.schedulerDataStorage1.Appointments.Mappings.ResourceId = "OwnerId";
+            this.schedulerDataStorage1.Appointments.Mappings.Status = "Status";
+            this.schedulerDataStorage1.Appointments.Mappings.Type = "EventType";
 
             CustomEventList eventList = new CustomEventList();
             GenerateEvents(eventList);
-            this.schedulerStorage1.Appointments.DataSource = eventList;
+            this.schedulerDataStorage1.Appointments.DataSource = eventList;
 
         }
         void GenerateEvents(CustomEventList eventList) {
-            int count = schedulerStorage1.Resources.Count;
+            int count = schedulerDataStorage1.Resources.Count;
             for (int i = 0; i < count; i++) {
-                Resource resource = schedulerStorage1.Resources[i];
+                Resource resource = schedulerDataStorage1.Resources[i];
                 string subjPrefix = resource.Caption + "'s ";
                 eventList.Add(CreateEvent(eventList, subjPrefix + "meeting", resource.Id, 1, 5));
                 eventList.Add(CreateEvent(eventList, subjPrefix + "travel", resource.Id, 4, 6));
@@ -119,17 +113,17 @@ namespace CustomDrawDemo {
         }
         #endregion
 
-#region #CustomDrawAppointment
+        #region #CustomDrawAppointment
         private void schedulerControl1_CustomDrawAppointment(object sender, CustomDrawObjectEventArgs e) {
             TimeLineAppointmentViewInfo tlvi = e.ObjectInfo as TimeLineAppointmentViewInfo;
             // This code works only for the Timeline View.
-            if(tlvi != null) {
+            if (tlvi != null) {
                 Rectangle r = e.Bounds;
                 r.X += 3;
                 r.Y += 3;
                 string[] s = tlvi.Appointment.Subject.Split(' ');
 
-                for(int i = 0; i < s.Length; i++) {
+                for (int i = 0; i < s.Length; i++) {
                     e.Cache.DrawString(s[i], tlvi.Appearance.Font, new SolidBrush(colorArray[i]),
  r, StringFormat.GenericDefault);
                     SizeF shift = e.Graphics.MeasureString(s[i] + " ", tlvi.Appearance.Font);
@@ -139,15 +133,15 @@ namespace CustomDrawDemo {
                 e.Handled = true;
             }
         }
-#endregion #CustomDrawAppointment
+        #endregion #CustomDrawAppointment
 
-#region #CustomDrawAppointmentBackground
+        #region #CustomDrawAppointmentBackground
         private void schedulerControl1_CustomDrawAppointmentBackground(object sender, CustomDrawObjectEventArgs e) {
             DevExpress.XtraScheduler.Drawing.AppointmentViewInfo aptViewInfo = e.ObjectInfo
  as DevExpress.XtraScheduler.Drawing.AppointmentViewInfo;
-            if(aptViewInfo == null)
+            if (aptViewInfo == null)
                 return;
-            if(aptViewInfo.Selected) {
+            if (aptViewInfo.Selected) {
                 Rectangle r = e.Bounds;
                 Brush brRect = aptViewInfo.Status.GetBrush();
                 e.Graphics.FillRectangle(brRect, r);
@@ -155,6 +149,6 @@ namespace CustomDrawDemo {
                 e.Handled = true;
             }
         }
-#endregion #CustomDrawAppointmentBackground
+        #endregion #CustomDrawAppointmentBackground
     }
 }

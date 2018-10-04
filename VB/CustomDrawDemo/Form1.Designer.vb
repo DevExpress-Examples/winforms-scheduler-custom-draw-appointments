@@ -27,7 +27,7 @@
             Dim timeRuler1 As New DevExpress.XtraScheduler.TimeRuler()
             Dim timeRuler2 As New DevExpress.XtraScheduler.TimeRuler()
             Me.schedulerControl1 = New DevExpress.XtraScheduler.SchedulerControl()
-            Me.schedulerStorage1 = New DevExpress.XtraScheduler.SchedulerStorage(Me.components)
+            Me.SchedulerDataStorage1 = New DevExpress.XtraScheduler.SchedulerDataStorage(Me.components)
             Me.panelControl1 = New DevExpress.XtraEditors.PanelControl()
             Me.cbView = New DevExpress.XtraEditors.ImageComboBoxEdit()
             Me.lblView = New DevExpress.XtraEditors.LabelControl()
@@ -35,7 +35,7 @@
             Me.rgrpGrouping = New DevExpress.XtraEditors.RadioGroup()
             Me.dateNavigator1 = New DevExpress.XtraScheduler.DateNavigator()
             DirectCast(Me.schedulerControl1, System.ComponentModel.ISupportInitialize).BeginInit()
-            DirectCast(Me.schedulerStorage1, System.ComponentModel.ISupportInitialize).BeginInit()
+            DirectCast(Me.SchedulerDataStorage1, System.ComponentModel.ISupportInitialize).BeginInit()
             DirectCast(Me.panelControl1, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.panelControl1.SuspendLayout()
             DirectCast(Me.cbView.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -51,7 +51,7 @@
             Me.schedulerControl1.Name = "schedulerControl1"
             Me.schedulerControl1.Size = New System.Drawing.Size(581, 469)
             Me.schedulerControl1.Start = New Date(2008, 12, 3, 0, 0, 0, 0)
-            Me.schedulerControl1.Storage = Me.schedulerStorage1
+            Me.schedulerControl1.DataStorage = Me.SchedulerDataStorage1
             Me.schedulerControl1.TabIndex = 0
             Me.schedulerControl1.Text = "schedulerControl1"
             Me.schedulerControl1.Views.DayView.AllDayAreaScrollBarVisible = False
@@ -79,13 +79,13 @@
             Me.cbView.EditValue = ""
             Me.cbView.Location = New System.Drawing.Point(52, 9)
             Me.cbView.Name = "cbView"
-            Me.cbView.Properties.Buttons.AddRange(New DevExpress.XtraEditors.Controls.EditorButton() { New DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)})
-            Me.cbView.Properties.Items.AddRange(New DevExpress.XtraEditors.Controls.ImageComboBoxItem() { _
-                New DevExpress.XtraEditors.Controls.ImageComboBoxItem("Day View", DevExpress.XtraScheduler.SchedulerViewType.Day, -1), _
-                New DevExpress.XtraEditors.Controls.ImageComboBoxItem("Work Week View", DevExpress.XtraScheduler.SchedulerViewType.WorkWeek, -1), _
-                New DevExpress.XtraEditors.Controls.ImageComboBoxItem("Week View", DevExpress.XtraScheduler.SchedulerViewType.Week, -1), _
-                New DevExpress.XtraEditors.Controls.ImageComboBoxItem("Month View", DevExpress.XtraScheduler.SchedulerViewType.Month, -1), _
-                New DevExpress.XtraEditors.Controls.ImageComboBoxItem("Timeline View", DevExpress.XtraScheduler.SchedulerViewType.Timeline, -1) _
+            Me.cbView.Properties.Buttons.AddRange(New DevExpress.XtraEditors.Controls.EditorButton() {New DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)})
+            Me.cbView.Properties.Items.AddRange(New DevExpress.XtraEditors.Controls.ImageComboBoxItem() {
+                New DevExpress.XtraEditors.Controls.ImageComboBoxItem("Day View", DevExpress.XtraScheduler.SchedulerViewType.Day, -1),
+                New DevExpress.XtraEditors.Controls.ImageComboBoxItem("Work Week View", DevExpress.XtraScheduler.SchedulerViewType.WorkWeek, -1),
+                New DevExpress.XtraEditors.Controls.ImageComboBoxItem("Week View", DevExpress.XtraScheduler.SchedulerViewType.Week, -1),
+                New DevExpress.XtraEditors.Controls.ImageComboBoxItem("Month View", DevExpress.XtraScheduler.SchedulerViewType.Month, -1),
+                New DevExpress.XtraEditors.Controls.ImageComboBoxItem("Timeline View", DevExpress.XtraScheduler.SchedulerViewType.Timeline, -1)
             })
             Me.cbView.Size = New System.Drawing.Size(212, 20)
             Me.cbView.TabIndex = 10
@@ -114,17 +114,17 @@
             Me.rgrpGrouping.Location = New System.Drawing.Point(332, 5)
             Me.rgrpGrouping.Name = "rgrpGrouping"
             Me.rgrpGrouping.Properties.Columns = 3
-            Me.rgrpGrouping.Properties.Items.AddRange(New DevExpress.XtraEditors.Controls.RadioGroupItem() { _
-                New DevExpress.XtraEditors.Controls.RadioGroupItem(DevExpress.XtraScheduler.SchedulerGroupType.None, "None"), _
-                New DevExpress.XtraEditors.Controls.RadioGroupItem(DevExpress.XtraScheduler.SchedulerGroupType.Date, "Date"), _
-                New DevExpress.XtraEditors.Controls.RadioGroupItem(DevExpress.XtraScheduler.SchedulerGroupType.Resource, "Resource") _
+            Me.rgrpGrouping.Properties.Items.AddRange(New DevExpress.XtraEditors.Controls.RadioGroupItem() {
+                New DevExpress.XtraEditors.Controls.RadioGroupItem(DevExpress.XtraScheduler.SchedulerGroupType.None, "None"),
+                New DevExpress.XtraEditors.Controls.RadioGroupItem(DevExpress.XtraScheduler.SchedulerGroupType.Date, "Date"),
+                New DevExpress.XtraEditors.Controls.RadioGroupItem(DevExpress.XtraScheduler.SchedulerGroupType.Resource, "Resource")
             })
             Me.rgrpGrouping.Size = New System.Drawing.Size(253, 24)
             Me.rgrpGrouping.TabIndex = 7
             ' 
             ' dateNavigator1
             ' 
-            Me.dateNavigator1.CalendarTimeProperties.Buttons.AddRange(New DevExpress.XtraEditors.Controls.EditorButton() { New DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)})
+            Me.dateNavigator1.CalendarTimeProperties.Buttons.AddRange(New DevExpress.XtraEditors.Controls.EditorButton() {New DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)})
             Me.dateNavigator1.CellPadding = New System.Windows.Forms.Padding(2)
             Me.dateNavigator1.Dock = System.Windows.Forms.DockStyle.Right
             Me.dateNavigator1.FirstDayOfWeek = System.DayOfWeek.Sunday
@@ -136,7 +136,7 @@
             ' 
             ' Form1
             ' 
-            Me.AutoScaleDimensions = New System.Drawing.SizeF(6F, 13F)
+            Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0F, 13.0F)
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.ClientSize = New System.Drawing.Size(786, 508)
             Me.Controls.Add(Me.schedulerControl1)
@@ -145,7 +145,7 @@
             Me.Name = "Form1"
             Me.Text = "CustomDrawDemo"
             DirectCast(Me.schedulerControl1, System.ComponentModel.ISupportInitialize).EndInit()
-            DirectCast(Me.schedulerStorage1, System.ComponentModel.ISupportInitialize).EndInit()
+            DirectCast(Me.SchedulerDataStorage1, System.ComponentModel.ISupportInitialize).EndInit()
             DirectCast(Me.panelControl1, System.ComponentModel.ISupportInitialize).EndInit()
             Me.panelControl1.ResumeLayout(False)
             Me.panelControl1.PerformLayout()
@@ -157,10 +157,10 @@
 
         End Sub
 
-        #End Region
+#End Region
 
         Private WithEvents schedulerControl1 As DevExpress.XtraScheduler.SchedulerControl
-        Private schedulerStorage1 As DevExpress.XtraScheduler.SchedulerStorage
+        Private SchedulerDataStorage1 As DevExpress.XtraScheduler.SchedulerDataStorage
         Private panelControl1 As DevExpress.XtraEditors.PanelControl
         Private dateNavigator1 As DevExpress.XtraScheduler.DateNavigator
         Private WithEvents cbView As DevExpress.XtraEditors.ImageComboBoxEdit
