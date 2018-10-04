@@ -15,16 +15,16 @@ Namespace CustomDrawDemo
     Partial Public Class Form1
         Inherits Form
 
-        #Region "InitialDataConstants"
+#Region "InitialDataConstants"
         Public Shared RandomInstance As New Random()
         Public Shared Users() As String = {"Peter Dolan", "Ryan Fischer", "Richard Fisher", "Tom Hamlett", "Mark Hamilton", "Steve Lee", "Jimmy Lewis", "Jeffrey W McClain", "Andrew Miller", "Dave Murrel", "Bert Parkins", "Mike Roller", "Ray Shipman", "Paul Bailey", "Brad Barnes", "Carl Lucas", "Jerry Campbell"}
-        #End Region
+#End Region
 
-        Private colorArray() As Color = { Color.Red, Color.Green, Color.Blue, Color.Black }
+        Private colorArray() As Color = {Color.Red, Color.Green, Color.Blue, Color.Black}
 
         Public Sub New()
             InitializeComponent()
-            FillResources(schedulerStorage1, 5)
+            FillResources(SchedulerDataStorage1, 5)
             InitAppointments()
 
             schedulerControl1.Start = Date.Now
@@ -44,41 +44,36 @@ Namespace CustomDrawDemo
 
         End Sub
 
-        #Region "InitialDataLoad"
-        Private Sub FillResources(ByVal storage As SchedulerStorage, ByVal count As Integer)
-            storage.BeginUpdate()
-            Try
-                Dim cnt As Integer = Math.Min(count, Users.Length)
-                For i As Integer = 1 To cnt
-                    storage.Resources.Items.Add(storage.CreateResource(Guid.NewGuid(), Users(i - 1)))
-                Next i
-            Finally
-                storage.EndUpdate()
-            End Try
+#Region "InitialDataLoad"
+        Private Sub FillResources(ByVal storage As SchedulerDataStorage, ByVal count As Integer)
+            Dim cnt As Integer = Math.Min(count, Users.Length)
+            For i As Integer = 1 To cnt
+                storage.Resources.Items.Add(storage.CreateResource(Guid.NewGuid(), Users(i - 1)))
+            Next i
         End Sub
         Private Sub InitAppointments()
-            Me.schedulerStorage1.Appointments.Mappings.Start = "StartTime"
-            Me.schedulerStorage1.Appointments.Mappings.End = "EndTime"
-            Me.schedulerStorage1.Appointments.Mappings.Subject = "Subject"
-            Me.schedulerStorage1.Appointments.Mappings.AllDay = "AllDay"
-            Me.schedulerStorage1.Appointments.Mappings.Description = "Description"
-            Me.schedulerStorage1.Appointments.Mappings.Label = "Label"
-            Me.schedulerStorage1.Appointments.Mappings.Location = "Location"
-            Me.schedulerStorage1.Appointments.Mappings.RecurrenceInfo = "RecurrenceInfo"
-            Me.schedulerStorage1.Appointments.Mappings.ReminderInfo = "ReminderInfo"
-            Me.schedulerStorage1.Appointments.Mappings.ResourceId = "OwnerId"
-            Me.schedulerStorage1.Appointments.Mappings.Status = "Status"
-            Me.schedulerStorage1.Appointments.Mappings.Type = "EventType"
+            Me.SchedulerDataStorage1.Appointments.Mappings.Start = "StartTime"
+            Me.SchedulerDataStorage1.Appointments.Mappings.End = "EndTime"
+            Me.SchedulerDataStorage1.Appointments.Mappings.Subject = "Subject"
+            Me.SchedulerDataStorage1.Appointments.Mappings.AllDay = "AllDay"
+            Me.SchedulerDataStorage1.Appointments.Mappings.Description = "Description"
+            Me.SchedulerDataStorage1.Appointments.Mappings.Label = "Label"
+            Me.SchedulerDataStorage1.Appointments.Mappings.Location = "Location"
+            Me.SchedulerDataStorage1.Appointments.Mappings.RecurrenceInfo = "RecurrenceInfo"
+            Me.SchedulerDataStorage1.Appointments.Mappings.ReminderInfo = "ReminderInfo"
+            Me.SchedulerDataStorage1.Appointments.Mappings.ResourceId = "OwnerId"
+            Me.SchedulerDataStorage1.Appointments.Mappings.Status = "Status"
+            Me.SchedulerDataStorage1.Appointments.Mappings.Type = "EventType"
 
             Dim eventList As New CustomEventList()
             GenerateEvents(eventList)
-            Me.schedulerStorage1.Appointments.DataSource = eventList
+            Me.SchedulerDataStorage1.Appointments.DataSource = eventList
 
         End Sub
         Private Sub GenerateEvents(ByVal eventList As CustomEventList)
-            Dim count As Integer = schedulerStorage1.Resources.Count
+            Dim count As Integer = SchedulerDataStorage1.Resources.Count
             For i As Integer = 0 To count - 1
-                Dim resource As Resource = schedulerStorage1.Resources(i)
+                Dim resource As Resource = SchedulerDataStorage1.Resources(i)
                 Dim subjPrefix As String = resource.Caption & "'s "
                 eventList.Add(CreateEvent(eventList, subjPrefix & "meeting", resource.Id, 1, 5))
                 eventList.Add(CreateEvent(eventList, subjPrefix & "travel", resource.Id, 4, 6))
@@ -97,9 +92,9 @@ Namespace CustomDrawDemo
             apt.Label = label
             Return apt
         End Function
-        #End Region
+#End Region
 
-        #Region "Update Controls"
+#Region "Update Controls"
         Private Sub UpdateControls()
             cbView.EditValue = schedulerControl1.ActiveViewType
             rgrpGrouping.EditValue = schedulerControl1.GroupType
@@ -115,7 +110,7 @@ Namespace CustomDrawDemo
         Private Sub cbView_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles cbView.SelectedIndexChanged
             schedulerControl1.ActiveViewType = CType(cbView.EditValue, SchedulerViewType)
         End Sub
-        #End Region
+#End Region
 
 #Region "#CustomDrawAppointment"
         Private Sub schedulerControl1_CustomDrawAppointment(ByVal sender As Object, ByVal e As CustomDrawObjectEventArgs) Handles schedulerControl1.CustomDrawAppointment
