@@ -49,7 +49,7 @@ namespace CustomDrawDemo {
         #region InitialDataLoad
         void FillResources(SchedulerDataStorage storage, int count) {
             int cnt = Math.Min(count, Users.Length);
-            for (int i = 1; i <= cnt; i++)
+            for(int i = 1; i <= cnt; i++)
                 storage.Resources.Items.Add(storage.CreateResource(Guid.NewGuid(), Users[i - 1]));
         }
         void InitAppointments() {
@@ -73,7 +73,7 @@ namespace CustomDrawDemo {
         }
         void GenerateEvents(CustomEventList eventList) {
             int count = schedulerDataStorage1.Resources.Count;
-            for (int i = 0; i < count; i++) {
+            for(int i = 0; i < count; i++) {
                 Resource resource = schedulerDataStorage1.Resources[i];
                 string subjPrefix = resource.Caption + "'s ";
                 eventList.Add(CreateEvent(eventList, subjPrefix + "meeting", resource.Id, 1, 5));
@@ -117,17 +117,16 @@ namespace CustomDrawDemo {
         private void schedulerControl1_CustomDrawAppointment(object sender, CustomDrawObjectEventArgs e) {
             TimeLineAppointmentViewInfo tlvi = e.ObjectInfo as TimeLineAppointmentViewInfo;
             // This code works only for the Timeline View.
-            if (tlvi != null) {
+            if(tlvi != null) {
                 Rectangle r = e.Bounds;
-                r.X += 3;
-                r.Y += 3;
+                r.Offset(3, 3);
                 string[] s = tlvi.Appointment.Subject.Split(' ');
 
-                for (int i = 0; i < s.Length; i++) {
-                    e.Cache.DrawString(s[i], tlvi.Appearance.Font, new SolidBrush(colorArray[i]),
- r, StringFormat.GenericDefault);
-                    SizeF shift = e.Graphics.MeasureString(s[i] + " ", tlvi.Appearance.Font);
-                    r.X += (int)shift.Width;
+                for(int i = 0; i < s.Length; i++) {
+                    using(var backBrush = new SolidBrush(colorArray[i]))
+                        e.Cache.DrawString(s[i], tlvi.Appearance.Font, backBrush, r, StringFormat.GenericDefault);
+                    Size shift = e.Cache.CalcTextSize(s[i] + "w", tlvi.Appearance.Font).ToSize();
+                    r.X += shift.Width;
                 }
 
                 e.Handled = true;
@@ -137,15 +136,14 @@ namespace CustomDrawDemo {
 
         #region #CustomDrawAppointmentBackground
         private void schedulerControl1_CustomDrawAppointmentBackground(object sender, CustomDrawObjectEventArgs e) {
-            DevExpress.XtraScheduler.Drawing.AppointmentViewInfo aptViewInfo = e.ObjectInfo
- as DevExpress.XtraScheduler.Drawing.AppointmentViewInfo;
-            if (aptViewInfo == null)
+            AppointmentViewInfo aptViewInfo = e.ObjectInfo as AppointmentViewInfo;
+            if(aptViewInfo == null)
                 return;
-            if (aptViewInfo.Selected) {
+            if(aptViewInfo.Selected) {
                 Rectangle r = e.Bounds;
                 Brush brRect = aptViewInfo.Status.GetBrush();
-                e.Graphics.FillRectangle(brRect, r);
-                e.Graphics.DrawRectangle(new Pen(Color.Blue, 2), r);
+                e.Cache.FillRectangle(brRect, r);
+                e.Cache.DrawRectangle(Pens.Blue, r);
                 e.Handled = true;
             }
         }

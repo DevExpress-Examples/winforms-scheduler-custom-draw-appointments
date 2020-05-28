@@ -118,14 +118,15 @@ Namespace CustomDrawDemo
             ' This code works only for the Timeline View.
             If tlvi IsNot Nothing Then
                 Dim r As Rectangle = e.Bounds
-                r.X += 3
-                r.Y += 3
+                r.Offset(3, 3)
                 Dim s() As String = tlvi.Appointment.Subject.Split(" "c)
 
                 For i As Integer = 0 To s.Length - 1
-                    e.Cache.DrawString(s(i), tlvi.Appearance.Font, New SolidBrush(colorArray(i)), r, StringFormat.GenericDefault)
-                    Dim shift As SizeF = e.Graphics.MeasureString(s(i) & " ", tlvi.Appearance.Font)
-                    r.X += CInt(shift.Width)
+                    Using backBrush = New SolidBrush(colorArray(i))
+                        e.Cache.DrawString(s(i), tlvi.Appearance.Font, backBrush, r, StringFormat.GenericDefault)
+                    End Using
+                    Dim shift As Size = e.Cache.CalcTextSize(s(i) & "w", tlvi.Appearance.Font).ToSize()
+                    r.X += shift.Width
                 Next i
 
                 e.Handled = True
@@ -143,7 +144,7 @@ Namespace CustomDrawDemo
                 Dim r As Rectangle = e.Bounds
                 Dim brRect As Brush = aptViewInfo.Status.GetBrush()
                 e.Graphics.FillRectangle(brRect, r)
-                e.Graphics.DrawRectangle(New Pen(Color.Blue, 2), r)
+                e.Graphics.DrawRectangle(Pens.Blue, r)
                 e.Handled = True
             End If
         End Sub
