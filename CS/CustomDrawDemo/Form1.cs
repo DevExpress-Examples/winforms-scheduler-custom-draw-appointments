@@ -42,6 +42,9 @@ namespace CustomDrawDemo {
             schedulerControl1.TimelineView.Scales[1].Width = 100;
 
 
+            TimelineView view = schedulerControl1.ActiveView as TimelineView;
+            view.AppointmentDisplayOptions.AllowHtmlText = true;
+
             UpdateControls();
 
         }
@@ -113,24 +116,15 @@ namespace CustomDrawDemo {
         }
         #endregion
 
-        #region #CustomDrawAppointment
-        private void schedulerControl1_CustomDrawAppointment(object sender, CustomDrawObjectEventArgs e) {
-            TimeLineAppointmentViewInfo tlvi = e.ObjectInfo as TimeLineAppointmentViewInfo;
-            // This code works only for the Timeline View.
-            if(tlvi != null) {
-                Rectangle r = e.Bounds;
-                r.Offset(3, 3);
-                string[] s = tlvi.Appointment.Subject.Split(' ');
+        #region #InitAppointmentDisplayText
 
-                for(int i = 0; i < s.Length; i++) {
-                    using(var backBrush = new SolidBrush(colorArray[i]))
-                        e.Cache.DrawString(s[i], tlvi.Appearance.Font, backBrush, r, StringFormat.GenericDefault);
-                    Size shift = e.Cache.CalcTextSize(s[i] + "w", tlvi.Appearance.Font).ToSize();
-                    r.X += shift.Width;
-                }
-
-                e.Handled = true;
-            }
+        Random r = new Random();
+        private void schedulerControl1_InitAppointmentDisplayText(object sender, AppointmentDisplayTextEventArgs e) {
+            string[] stringArray = e.Text.Split(' ');
+            StringBuilder builder = new StringBuilder();
+            foreach(string str in stringArray)
+                builder.Append(string.Concat("<color=", r.Next(0, 255), ",", r.Next(0, 255), ",", r.Next(0, 255), ">", str, " ", "</color>"));
+            e.Text = builder.ToString();
         }
         #endregion #CustomDrawAppointment
 

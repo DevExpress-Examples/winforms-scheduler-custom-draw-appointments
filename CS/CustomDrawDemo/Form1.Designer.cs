@@ -61,8 +61,8 @@ namespace CustomDrawDemo {
             this.schedulerControl1.Views.WorkWeekView.AllDayAreaScrollBarVisible = false;
             this.schedulerControl1.Views.WorkWeekView.TimeRulers.Add(timeRuler2);
             this.schedulerControl1.ActiveViewChanged += new System.EventHandler(this.schedulerControl_ActiveViewChanged);
-            this.schedulerControl1.CustomDrawAppointment += new DevExpress.XtraScheduler.CustomDrawObjectEventHandler(this.schedulerControl1_CustomDrawAppointment);
             this.schedulerControl1.CustomDrawAppointmentBackground += new DevExpress.XtraScheduler.CustomDrawObjectEventHandler(this.schedulerControl1_CustomDrawAppointmentBackground);
+            this.schedulerControl1.InitAppointmentDisplayText += schedulerControl1_InitAppointmentDisplayText;
             // 
             // panelControl1
             // 
@@ -162,7 +162,6 @@ namespace CustomDrawDemo {
             this.ResumeLayout(false);
 
         }
-
         #endregion
 
         private DevExpress.XtraScheduler.SchedulerControl schedulerControl1;

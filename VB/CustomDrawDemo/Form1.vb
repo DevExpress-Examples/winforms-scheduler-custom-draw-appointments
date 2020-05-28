@@ -39,6 +39,9 @@ Namespace CustomDrawDemo
             schedulerControl1.TimelineView.Scales.Add(New TimeScaleHour())
             schedulerControl1.TimelineView.Scales(1).Width = 100
 
+            Dim view As TimelineView = TryCast(schedulerControl1.ActiveView, TimelineView)
+            view.AppointmentDisplayOptions.AllowHtmlText = True
+
 
             UpdateControls()
 
@@ -112,26 +115,17 @@ Namespace CustomDrawDemo
         End Sub
 #End Region
 
-#Region "#CustomDrawAppointment"
-        Private Sub schedulerControl1_CustomDrawAppointment(ByVal sender As Object, ByVal e As CustomDrawObjectEventArgs) Handles schedulerControl1.CustomDrawAppointment
-            Dim tlvi As TimeLineAppointmentViewInfo = TryCast(e.ObjectInfo, TimeLineAppointmentViewInfo)
-            ' This code works only for the Timeline View.
-            If tlvi IsNot Nothing Then
-                Dim r As Rectangle = e.Bounds
-                r.Offset(3, 3)
-                Dim s() As String = tlvi.Appointment.Subject.Split(" "c)
-
-                For i As Integer = 0 To s.Length - 1
-                    Using backBrush = New SolidBrush(colorArray(i))
-                        e.Cache.DrawString(s(i), tlvi.Appearance.Font, backBrush, r, StringFormat.GenericDefault)
-                    End Using
-                    Dim shift As Size = e.Cache.CalcTextSize(s(i) & "w", tlvi.Appearance.Font).ToSize()
-                    r.X += shift.Width
-                Next i
-
-                e.Handled = True
-            End If
+#Region "#InitAppointmentDisplayText"
+        Private r As New Random()
+        Private Sub schedulerControl1_InitAppointmentDisplayText(ByVal sender As Object, ByVal e As AppointmentDisplayTextEventArgs) Handles schedulerControl1.InitAppointmentDisplayText
+            Dim stringArray() As String = e.Text.Split(" "c)
+            Dim builder As New StringBuilder()
+            For Each str As String In stringArray
+                builder.Append(String.Concat("<color=", r.Next(0, 255), ",", r.Next(0, 255), ",", r.Next(0, 255), ">", str, " ", "</color>"))
+            Next str
+            e.Text = builder.ToString()
         End Sub
+
 #End Region ' #CustomDrawAppointment
 
 #Region "#CustomDrawAppointmentBackground"
