@@ -3,11 +3,41 @@
 [![](https://img.shields.io/badge/Open_in_DevExpress_Support_Center-FF7200?style=flat-square&logo=DevExpress&logoColor=white)](https://supportcenter.devexpress.com/ticket/details/T830618)
 [![](https://img.shields.io/badge/📖_How_to_use_DevExpress_Examples-e9f6fc?style=flat-square)](https://docs.devexpress.com/GeneralInformation/403183)
 <!-- default badges end -->
-# SchedulerControl - How to colorize appointments
+# WinForms Scheduler - Customize the appearance of appointments
 
 
-<p>This example illustrates the use of <a href="https://docs.devexpress.com/WindowsForms/4874/common-features/html-text-formatting">HTML-inspired Text Formatting</a> and the <a href="http://documentation.devexpress.com/#WindowsForms/DevExpressXtraSchedulerSchedulerControl_CustomDrawAppointmentBackgroundtopic">CustomDrawAppointmentBackground</a> event.</p><p>The background color for selected appointments is inverted, and the border is drawn colored according to the current <a href="http://documentation.devexpress.com/#WindowsForms/clsDevExpressXtraSchedulerAppointmentStatustopic">appointment status</a>. In the <strong>Timeline view</strong> the words, comprising the text of the subject, are painted with different colors.</p>
+This example demonstrates the following techniques to customize the appearance of appointments:
 
-<br/>
+* [HTML-inspired Text Formatting](https://docs.devexpress.com/WindowsForms/4874/common-features/html-text-formatting)
+  ```csharp
+  Random r = new Random();
+  private void schedulerControl1_InitAppointmentDisplayText(object sender, AppointmentDisplayTextEventArgs e) {
+      string[] stringArray = e.Text.Split(' ');
+      StringBuilder builder = new StringBuilder();
+      foreach(string str in stringArray)
+          builder.Append(string.Concat("<color=", r.Next(0, 255), ",", r.Next(0, 255), ",", r.Next(0, 255), ">", str, " ", "</color>"));
+      e.Text = builder.ToString();
+  }
+  ```
+* Custom Draw Appointments
+  The [CustomDrawAppointmentBackground](https://docs.devexpress.com/WindowsForms/DevExpress.XtraScheduler.SchedulerControl.CustomDrawAppointmentBackground) event is handled to draw the border and invert the background color for selected appointments. In the Timeline View the subject is painted with different colors.
 
+  ```csharp
+  private void schedulerControl1_CustomDrawAppointmentBackground(object sender, CustomDrawObjectEventArgs e) {
+      AppointmentViewInfo aptViewInfo = e.ObjectInfo as AppointmentViewInfo;
+      if(aptViewInfo == null)
+          return;
+      if(aptViewInfo.Selected) {
+          Rectangle r = e.Bounds;
+          Brush brRect = aptViewInfo.Status.GetBrush();
+          e.Cache.FillRectangle(brRect, r);
+          e.Cache.DrawRectangle(Pens.Blue, r);
+          e.Handled = true;
+      }
+  }
+  ```
 
+The following screenshot shows the result:
+
+![WinForms Scheduler - Customize the appearance of appointments
+](https://raw.githubusercontent.com/DevExpress-Examples/scheduler-control-use-the-custom-draw-appointment-custom-draw-appointment-background-events/19.2.3%2B/media/winforms-scheduler.png)
