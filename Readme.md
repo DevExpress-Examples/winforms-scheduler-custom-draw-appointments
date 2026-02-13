@@ -43,7 +43,7 @@ The following screenshot shows the result:
 ![WinForms Scheduler - Customize the appearance of appointments
 ](https://raw.githubusercontent.com/DevExpress-Examples/scheduler-control-use-the-custom-draw-appointment-custom-draw-appointment-background-events/19.2.3%2B/media/winforms-scheduler.png)
 <!-- feedback -->
-## Does this example address your development requirements/objectives?
+## Does This Example Address Your Development Requirements/Objectives?
 
 [<img src="https://www.devexpress.com/support/examples/i/yes-button.svg"/>](https://www.devexpress.com/support/examples/survey.xml?utm_source=github&utm_campaign=winforms-scheduler-custom-draw-appointments&~~~was_helpful=yes) [<img src="https://www.devexpress.com/support/examples/i/no-button.svg"/>](https://www.devexpress.com/support/examples/survey.xml?utm_source=github&utm_campaign=winforms-scheduler-custom-draw-appointments&~~~was_helpful=no)
 
