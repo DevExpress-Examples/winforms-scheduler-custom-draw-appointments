@@ -41,7 +41,7 @@ This example demonstrates the following techniques to customize the appearance o
 The following screenshot shows the result:
 
 ![WinForms Scheduler - Customize the appearance of appointments
-](https://raw.githubusercontent.com/DevExpress-Examples/scheduler-control-use-the-custom-draw-appointment-custom-draw-appointment-background-events/19.2.3%2B/media/winforms-scheduler.png)
+](media/winforms-scheduler.png)
 <!-- feedback -->
 ## Does This Example Address Your Development Requirements/Objectives?
 
@@ -49,3 +49,4 @@ The following screenshot shows the result:
 
 (you will be redirected to DevExpress.com to submit your response)
 <!-- feedback end -->
+
